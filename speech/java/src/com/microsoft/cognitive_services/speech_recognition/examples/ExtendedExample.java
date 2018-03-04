@@ -212,7 +212,7 @@ public class ExtendedExample extends JPanel implements ActionListener {
         CompletableFuture.runAsync(() -> {
           try {
             String result = speechClient.process(file.toPath());
-            log.append(String.format("Fuck:%s\n", result));
+          //  log.append(String.format("Fuck:%s\n", result));
             log.append(String.format("Speech recognition results:\n%s\n", result));
           } catch (IOException error) {
             log.append(String.format("Ups...something went wrong (%s).\n", error.getMessage()));
@@ -252,6 +252,9 @@ public class ExtendedExample extends JPanel implements ActionListener {
           String result = speechClient.process(sink);
           Gson gson = new Gson();
           speechInput si = gson.fromJson(result,speechInput.class);
+          if(si.getNBest().isEmpty()) System.out.println("Fuck");
+          MainParser mp = new MainParser(si);
+          mp.run();
           //System.out.println(String.format("I Printed: %s\n", result));
           log.append(String.format("Speech recognition results:\n%s\n", result));
         } catch (Exception error) {
